@@ -108,9 +108,6 @@
     <ImageAsset Include="Assets.xcassets\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Camera.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Camera.imageset\ic_photo_camera.png" />
-    <ImageAsset Include="Assets.xcassets\Camera.imageset\ic_photo_camera_2x.png" />
-    <ImageAsset Include="Assets.xcassets\Camera.imageset\ic_photo_camera_3x.png" />
     <ImageAsset Include="Assets.xcassets\Settings.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Settings.imageset\ic_settings.png" />
     <ImageAsset Include="Assets.xcassets\Settings.imageset\ic_settings_2x.png" />
@@ -119,6 +116,10 @@
     <ImageAsset Include="Assets.xcassets\Timeline.imageset\ic_collections.png" />
     <ImageAsset Include="Assets.xcassets\Timeline.imageset\ic_collections_2x.png" />
     <ImageAsset Include="Assets.xcassets\Timeline.imageset\ic_collections_3x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\ic_photo_camera_black_24px.pdf" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\ic_photo_camera.png" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\ic_photo_camera_2x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\ic_photo_camera_3x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -126,6 +127,7 @@
     <Folder Include="Assets.xcassets\Settings.imageset\" />
     <Folder Include="Assets.xcassets\Timeline.imageset\" />
     <Folder Include="ViewControllers\" />
+    <Folder Include="Assets.xcassets\CameraOnCircle.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="70">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +18,7 @@
                         <viewControllerLayoutGuide type="bottom" id="56"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="61">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -37,7 +37,7 @@
                         <viewControllerLayoutGuide type="bottom" id="6qj-V6-Srv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yk7-6A-B3d">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -57,33 +57,24 @@
                         <viewControllerLayoutGuide type="bottom" id="58"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="66">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bp7-U7-Hic">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bp7-U7-Hic">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" restorationIdentifier="triggerCameraButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81">
-                                <rect key="frame" x="147" y="580" width="80" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81">
+                                <rect key="frame" x="159" y="550" width="60" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="107"/>
-                                    <constraint firstAttribute="width" secondItem="81" secondAttribute="height" multiplier="8:3" id="c1p-3d-LYC"/>
+                                    <constraint firstAttribute="width" constant="60" id="KfD-Lt-KUk"/>
+                                    <constraint firstAttribute="height" constant="60" id="f4e-7n-DSt"/>
                                 </constraints>
-                                <state key="normal" title="Take Photo">
+                                <size key="titleShadowOffset" width="5" height="5"/>
+                                <state key="normal" image="Camera">
+                                    <color key="titleColor" red="0.8964651371179071" green="0.27688499326072535" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="107"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="107"/>
-                                    </mask>
-                                </variation>
                                 <connections>
                                     <action selector="TakePhoto:" destination="65" eventType="touchUpInside" id="96"/>
                                 </connections>
@@ -91,18 +82,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="58" firstAttribute="top" secondItem="81" secondAttribute="bottom" constant="8" id="2Tf-bc-qrb"/>
-                            <constraint firstItem="81" firstAttribute="centerX" secondItem="66" secondAttribute="centerX" constant="1" id="7VK-VA-o7M"/>
+                            <constraint firstItem="58" firstAttribute="top" secondItem="81" secondAttribute="bottom" constant="8" id="6jf-8H-ZGc"/>
+                            <constraint firstItem="Bp7-U7-Hic" firstAttribute="bottom" secondItem="58" secondAttribute="top" id="Ff8-Zc-LOT"/>
+                            <constraint firstAttribute="trailing" secondItem="Bp7-U7-Hic" secondAttribute="trailing" id="Pfb-vp-XZD"/>
+                            <constraint firstItem="Bp7-U7-Hic" firstAttribute="top" secondItem="66" secondAttribute="top" id="WXy-7I-N24"/>
+                            <constraint firstItem="Bp7-U7-Hic" firstAttribute="leading" secondItem="66" secondAttribute="leading" id="cdp-LH-nrb"/>
+                            <constraint firstItem="81" firstAttribute="centerX" secondItem="66" secondAttribute="centerX" constant="1" id="s2o-MI-kf0"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Camera" image="Camera" id="67"/>
                     <connections>
                         <outlet property="liveCameraStream" destination="Bp7-U7-Hic" id="name-outlet-Bp7-U7-Hic"/>
+                        <outlet property="triggerCameraButton" destination="81" id="name-outlet-81"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="68" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="240.8" y="-724.5877"/>
+            <point key="canvasLocation" x="240.80000000000001" y="-724.58770000000004"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="69">
@@ -125,7 +121,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Camera" width="24" height="24"/>
+        <image name="Camera" width="32" height="32"/>
         <image name="Settings" width="24" height="24"/>
         <image name="Timeline" width="24" height="24"/>
     </resources>

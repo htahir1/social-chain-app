@@ -17,12 +17,15 @@ namespace AND101.iOS
 
 		public CameraViewController(IntPtr handle) : base(handle)
 		{
-
+			
 		}
 
 		public override async void ViewDidLoad()
 		{
 			base.ViewDidLoad();
+
+			triggerCameraButton.BackgroundColor = UIColor.White;
+			triggerCameraButton.Layer.CornerRadius = triggerCameraButton.Frame.Width / 2;
 
 			await AuthorizeCameraUse();
 			SetupLiveCameraStream();
@@ -121,6 +124,7 @@ namespace AND101.iOS
 			}
 		}
 
+		// TODO: make this a task to run in the background --> Speed up application launch
 		public void SetupLiveCameraStream()
 		{
 			captureSession = new AVCaptureSession();
