@@ -14,12 +14,20 @@ namespace AND101.iOS
     [Register ("CameraViewController")]
     partial class CameraViewController
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView liveCameraStream { get; set; }
+
         [Action ("TakePhoto:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void TakePhoto (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
+            if (liveCameraStream != null) {
+                liveCameraStream.Dispose ();
+                liveCameraStream = null;
+            }
         }
     }
 }
