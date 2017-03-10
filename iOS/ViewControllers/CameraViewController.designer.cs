@@ -20,7 +20,15 @@ namespace AND101.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton switchCameraButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton triggerCameraButton { get; set; }
+
+        [Action ("SwitchCameraButtonTapped:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void SwitchCameraButtonTapped (UIKit.UIButton sender);
 
         [Action ("TakePhoto:")]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -31,6 +39,11 @@ namespace AND101.iOS
             if (liveCameraStream != null) {
                 liveCameraStream.Dispose ();
                 liveCameraStream = null;
+            }
+
+            if (switchCameraButton != null) {
+                switchCameraButton.Dispose ();
+                switchCameraButton = null;
             }
 
             if (triggerCameraButton != null) {

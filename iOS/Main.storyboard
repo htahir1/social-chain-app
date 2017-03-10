@@ -4,8 +4,8 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -65,7 +65,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81">
-                                <rect key="frame" x="159" y="550" width="60" height="60"/>
+                                <rect key="frame" x="157.5" y="542" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="KfD-Lt-KUk"/>
                                     <constraint firstAttribute="height" constant="60" id="f4e-7n-DSt"/>
@@ -79,26 +79,40 @@
                                     <action selector="TakePhoto:" destination="65" eventType="touchUpInside" id="96"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tJ2-wk-kVy" userLabel="Switch Camera Button">
+                                <rect key="frame" x="311" y="28" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="5aw-ru-xHM"/>
+                                    <constraint firstAttribute="height" constant="40" id="gOF-sS-djK"/>
+                                </constraints>
+                                <state key="normal" image="SwitchCamera"/>
+                                <connections>
+                                    <action selector="SwitchCameraButtonTapped:" destination="65" eventType="touchUpInside" id="105"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="58" firstAttribute="top" secondItem="81" secondAttribute="bottom" constant="8" id="6jf-8H-ZGc"/>
+                            <constraint firstItem="58" firstAttribute="top" secondItem="81" secondAttribute="bottom" constant="16" id="6jf-8H-ZGc"/>
                             <constraint firstItem="Bp7-U7-Hic" firstAttribute="bottom" secondItem="58" secondAttribute="top" id="Ff8-Zc-LOT"/>
                             <constraint firstAttribute="trailing" secondItem="Bp7-U7-Hic" secondAttribute="trailing" id="Pfb-vp-XZD"/>
                             <constraint firstItem="Bp7-U7-Hic" firstAttribute="top" secondItem="66" secondAttribute="top" id="WXy-7I-N24"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tJ2-wk-kVy" secondAttribute="trailing" constant="8" id="cUL-My-TDm"/>
                             <constraint firstItem="Bp7-U7-Hic" firstAttribute="leading" secondItem="66" secondAttribute="leading" id="cdp-LH-nrb"/>
-                            <constraint firstItem="81" firstAttribute="centerX" secondItem="66" secondAttribute="centerX" constant="1" id="s2o-MI-kf0"/>
+                            <constraint firstItem="tJ2-wk-kVy" firstAttribute="top" secondItem="57" secondAttribute="bottom" constant="8" id="ll6-YL-l86"/>
+                            <constraint firstItem="81" firstAttribute="centerX" secondItem="66" secondAttribute="centerX" id="s2o-MI-kf0"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Camera" image="Camera" id="67"/>
                     <connections>
                         <outlet property="liveCameraStream" destination="Bp7-U7-Hic" id="name-outlet-Bp7-U7-Hic"/>
+                        <outlet property="switchCameraButton" destination="tJ2-wk-kVy" id="name-outlet-tJ2-wk-kVy"/>
                         <outlet property="triggerCameraButton" destination="81" id="name-outlet-81"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="68" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="240.80000000000001" y="-724.58770000000004"/>
+            <point key="canvasLocation" x="240.80000000000001" y="-724.58770614692662"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="69">
@@ -121,8 +135,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Camera" width="32" height="32"/>
+        <image name="Camera" width="24" height="24"/>
         <image name="Settings" width="24" height="24"/>
+        <image name="SwitchCamera" width="24" height="24"/>
         <image name="Timeline" width="24" height="24"/>
     </resources>
 </document>

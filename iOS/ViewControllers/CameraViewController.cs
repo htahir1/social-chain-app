@@ -17,7 +17,7 @@ namespace AND101.iOS
 
 		public CameraViewController(IntPtr handle) : base(handle)
 		{
-			
+
 		}
 
 		public override async void ViewDidLoad()
@@ -26,6 +26,9 @@ namespace AND101.iOS
 
 			triggerCameraButton.BackgroundColor = UIColor.White;
 			triggerCameraButton.Layer.CornerRadius = triggerCameraButton.Frame.Width / 2;
+
+			switchCameraButton.BackgroundColor = UIColor.White;
+			switchCameraButton.Layer.CornerRadius = switchCameraButton.Frame.Width / 4;
 
 			await AuthorizeCameraUse();
 			SetupLiveCameraStream();
@@ -49,27 +52,27 @@ namespace AND101.iOS
 			// TODO: Send this to local storage or cloud storage such as Azure Storage.
 		}
 
-		//partial void SwitchCameraButtonTapped(UIButton sender)
-		//{
-		//	var devicePosition = captureDeviceInput.Device.Position;
-		//	if (devicePosition == AVCaptureDevicePosition.Front)
-		//	{
-		//		devicePosition = AVCaptureDevicePosition.Back;
-		//	}
-		//	else
-		//	{
-		//		devicePosition = AVCaptureDevicePosition.Front;
-		//	}
+		partial void SwitchCameraButtonTapped(UIButton sender)
+		{
+			var devicePosition = captureDeviceInput.Device.Position;
+			if (devicePosition == AVCaptureDevicePosition.Front)
+			{
+				devicePosition = AVCaptureDevicePosition.Back;
+			}
+			else
+			{
+				devicePosition = AVCaptureDevicePosition.Front;
+			}
 
-		//	var device = GetCameraForOrientation(devicePosition);
-		//	ConfigureCameraForDevice(device);
+			var device = GetCameraForOrientation(devicePosition);
+			ConfigureCameraForDevice(device);
 
-		//	captureSession.BeginConfiguration();
-		//	captureSession.RemoveInput(captureDeviceInput);
-		//	captureDeviceInput = AVCaptureDeviceInput.FromDevice(device);
-		//	captureSession.AddInput(captureDeviceInput);
-		//	captureSession.CommitConfiguration();
-		//}
+			captureSession.BeginConfiguration();
+			captureSession.RemoveInput(captureDeviceInput);
+			captureDeviceInput = AVCaptureDeviceInput.FromDevice(device);
+			captureSession.AddInput(captureDeviceInput);
+			captureSession.CommitConfiguration();
+		}
 
 		public AVCaptureDevice GetCameraForOrientation(AVCaptureDevicePosition orientation)
 		{
