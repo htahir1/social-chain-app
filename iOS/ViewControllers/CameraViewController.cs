@@ -34,7 +34,24 @@ namespace AND101.iOS
 			flashButton.Layer.CornerRadius = flashButton.Frame.Width / 4;
 
 			await AuthorizeCameraUse();
+		}
+
+		public override void ViewDidAppear(Boolean animated)
+		{
+			base.ViewDidAppear(animated);
+
 			SetupLiveCameraStream();
+		}
+
+		public override void ViewWillDisappear(Boolean animated)
+		{
+			base.ViewWillDisappear(animated);
+			AVCaptureDevice device = captureDeviceInput.Device;
+
+			if (device.HasFlash && flashOn)
+			{
+				TurnOffFlash(device);
+			}
 		}
 
 		public override void DidReceiveMemoryWarning()
@@ -94,33 +111,42 @@ namespace AND101.iOS
 
 		partial void FlashButtonTapped(UIButton sender)
 		{
-			var device = captureDeviceInput.Device;
+			AVCaptureDevice device = captureDeviceInput.Device;
 
-			var error = new NSError();
 			if (device.HasFlash)
 			{
-				if (device.FlashMode == AVCaptureFlashMode.On)
+				if (device.TorchMode == AVCaptureTorchMode.On)
 				{
-					Console.WriteLine("Turning flash OFF");
-					device.LockForConfiguration(out error);
-					device.FlashMode = AVCaptureFlashMode.Off;  // before iOS 10
-					device.TorchMode = AVCaptureTorchMode.Off;  // after iOS 10
-					device.UnlockForConfiguration();
-
-					flashButton.SetImage(UIImage.FromBundle("FlashOn"), UIControlState.Normal);
+					TurnOffFlash(device);
 				}
 				else
 				{
-					Console.WriteLine("Turning flash ON");
-					device.LockForConfiguration(out error);
-					device.FlashMode = AVCaptureFlashMode.On;  // before iOS 10
-					device.TorchMode = AVCaptureTorchMode.On;  // after iOS 10
-					device.UnlockForConfiguration();
-
-					flashButton.SetImage(UIImage.FromBundle("FlashOff"), UIControlState.Normal);
+					TurnOnFlash(device);
 				}
 			}
+		}
 
+		private void TurnOffFlash(AVCaptureDevice device)
+		{
+			var error = new NSError();
+			Console.WriteLine("Turning flash OFF");
+			device.LockForConfiguration(out error);
+			device.TorchMode = AVCaptureTorchMode.Off;
+			device.UnlockForConfiguration();
+
+			flashButton.SetImage(UIImage.FromBundle("FlashOn"), UIControlState.Normal);
+			flashOn = !flashOn;
+		}
+
+		private void TurnOnFlash(AVCaptureDevice device)
+		{
+			var error = new NSError();
+			Console.WriteLine("Turning flash ON");
+			device.LockForConfiguration(out error);
+			device.TorchMode = AVCaptureTorchMode.On;
+			device.UnlockForConfiguration();
+
+			flashButton.SetImage(UIImage.FromBundle("FlashOff"), UIControlState.Normal);
 			flashOn = !flashOn;
 		}
 
