@@ -30,6 +30,9 @@ namespace AND101.iOS
 			switchCameraButton.BackgroundColor = UIColor.White;
 			switchCameraButton.Layer.CornerRadius = switchCameraButton.Frame.Width / 4;
 
+			flashButton.BackgroundColor = UIColor.White;
+			flashButton.Layer.CornerRadius = flashButton.Frame.Width / 4;
+
 			await AuthorizeCameraUse();
 			SetupLiveCameraStream();
 		}
@@ -89,33 +92,37 @@ namespace AND101.iOS
 			return null;
 		}
 
-		//partial void FlashButtonTapped(UIButton sender)
-		//{
-		//	var device = captureDeviceInput.Device;
+		partial void FlashButtonTapped(UIButton sender)
+		{
+			var device = captureDeviceInput.Device;
 
-		//	var error = new NSError();
-		//	if (device.HasFlash)
-		//	{
-		//		if (device.FlashMode == AVCaptureFlashMode.On)
-		//		{
-		//			device.LockForConfiguration(out error);
-		//			device.FlashMode = AVCaptureFlashMode.Off;
-		//			device.UnlockForConfiguration();
+			var error = new NSError();
+			if (device.HasFlash)
+			{
+				if (device.FlashMode == AVCaptureFlashMode.On)
+				{
+					Console.WriteLine("Turning flash OFF");
+					device.LockForConfiguration(out error);
+					device.FlashMode = AVCaptureFlashMode.Off;  // before iOS 10
+					device.TorchMode = AVCaptureTorchMode.Off;  // after iOS 10
+					device.UnlockForConfiguration();
 
-		//			flashButton.SetBackgroundImage(UIImage.FromBundle("NoFlashButton.png"), UIControlState.Normal);
-		//		}
-		//		else
-		//		{
-		//			device.LockForConfiguration(out error);
-		//			device.FlashMode = AVCaptureFlashMode.On;
-		//			device.UnlockForConfiguration();
+					flashButton.SetImage(UIImage.FromBundle("FlashOn"), UIControlState.Normal);
+				}
+				else
+				{
+					Console.WriteLine("Turning flash ON");
+					device.LockForConfiguration(out error);
+					device.FlashMode = AVCaptureFlashMode.On;  // before iOS 10
+					device.TorchMode = AVCaptureTorchMode.On;  // after iOS 10
+					device.UnlockForConfiguration();
 
-		//			flashButton.SetBackgroundImage(UIImage.FromBundle("FlashButton.png"), UIControlState.Normal);
-		//		}
-		//	}
+					flashButton.SetImage(UIImage.FromBundle("FlashOff"), UIControlState.Normal);
+				}
+			}
 
-		//	flashOn = !flashOn;
-		//}
+			flashOn = !flashOn;
+		}
 
 		async Task AuthorizeCameraUse()
 		{
@@ -139,7 +146,7 @@ namespace AND101.iOS
 			};
 			liveCameraStream.Layer.AddSublayer(videoPreviewLayer);
 
-			var captureDevice = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
+			var captureDevice = AVCaptureDevice.GetDefaultDevice(AVMediaType.Video);
 			ConfigureCameraForDevice(captureDevice);
 			captureDeviceInput = AVCaptureDeviceInput.FromDevice(captureDevice);
 			captureSession.AddInput(captureDeviceInput);

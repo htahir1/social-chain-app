@@ -125,6 +125,14 @@
     <ImageAsset Include="Assets.xcassets\SwitchCamera.imageset\ic_switch_camera.png" />
     <ImageAsset Include="Assets.xcassets\SwitchCamera.imageset\ic_switch_camera_2x.png" />
     <ImageAsset Include="Assets.xcassets\SwitchCamera.imageset\ic_switch_camera_3x.png" />
+    <ImageAsset Include="Assets.xcassets\FlashOn.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\FlashOff.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\FlashOff.imageset\flash-off-1x.png" />
+    <ImageAsset Include="Assets.xcassets\FlashOff.imageset\flash-off-2x.png" />
+    <ImageAsset Include="Assets.xcassets\FlashOff.imageset\flash-off-3x.png" />
+    <ImageAsset Include="Assets.xcassets\FlashOn.imageset\flash-on-1x.png" />
+    <ImageAsset Include="Assets.xcassets\FlashOn.imageset\flash-on-2x.png" />
+    <ImageAsset Include="Assets.xcassets\FlashOn.imageset\flash-on-3x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -134,6 +142,8 @@
     <Folder Include="ViewControllers\" />
     <Folder Include="Assets.xcassets\CameraOnCircle.imageset\" />
     <Folder Include="Assets.xcassets\SwitchCamera.imageset\" />
+    <Folder Include="Assets.xcassets\FlashOn.imageset\" />
+    <Folder Include="Assets.xcassets\FlashOff.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

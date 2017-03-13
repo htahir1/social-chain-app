@@ -16,6 +16,10 @@ namespace AND101.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton flashButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIView liveCameraStream { get; set; }
 
         [Outlet]
@@ -25,6 +29,10 @@ namespace AND101.iOS
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton triggerCameraButton { get; set; }
+
+        [Action ("FlashButtonTapped:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void FlashButtonTapped (UIKit.UIButton sender);
 
         [Action ("SwitchCameraButtonTapped:")]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -36,6 +44,11 @@ namespace AND101.iOS
 
         void ReleaseDesignerOutlets ()
         {
+            if (flashButton != null) {
+                flashButton.Dispose ();
+                flashButton = null;
+            }
+
             if (liveCameraStream != null) {
                 liveCameraStream.Dispose ();
                 liveCameraStream = null;
