@@ -1,2 +1,2 @@
 # social-chain-app
-A quick project among nomad friends to learn: Developed in xamarin.
+Server side for the Nomad Timeline App
