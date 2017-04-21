@@ -1,8 +1,11 @@
 from flask import Flask
+from flask_mysqldb import MySQL
 
 # print a nice greeting.
 def say_hello(username = "World"):
     return '<p>Hello %s!</p>\n' % username
+
+
 
 # some bits of text for the page.
 header_text = '''
@@ -16,6 +19,8 @@ footer_text = '</body>\n</html>'
 
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
+mysql = MySQL(application)
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://nomads:nomads-partytimeline@nomads-partytimeline.cstmqefvhsvd.us-west-2.rds.amazonaws.com:3306/nomads_partytimeline'
 
 # add a rule for the index page.
 application.add_url_rule('/', 'index', (lambda: header_text +
@@ -25,6 +30,13 @@ application.add_url_rule('/', 'index', (lambda: header_text +
 # URL.
 application.add_url_rule('/<username>', 'hello', (lambda username:
     header_text + say_hello(username) + home_link + footer_text))
+
+@application.route('/db_test')
+def users():
+    cur = mysql.connection.cursor()
+    cur.execute('''SELECT test, host FROM mysql.user''')
+    rv = cur.fetchall()
+    return str(rv)
 
 # run the app.
 if __name__ == "__main__":
