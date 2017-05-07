@@ -1,11 +1,14 @@
 package com.partytimeline.event;
 
 import com.partytimeline.core.BaseEntity;
+import com.partytimeline.user.User;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Event extends BaseEntity {
@@ -23,6 +26,13 @@ public class Event extends BaseEntity {
     @NotNull
     private Date end_time;
 
+    @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL)
+    private Set<User> users;
+
+    protected Event() {
+        super();
+        users = new HashSet<>();
+    }
     public Event(String name, String description, Date start_time, Date end_time) {
         this.name = name;
         this.description = description;
@@ -61,4 +71,16 @@ public class Event extends BaseEntity {
     public void setEndTime(Date end_time) {
         this.end_time = end_time;
     }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+        if (!user.getEvents().contains(this)) {
+            user.addEvent(this);
+        }
+    }
+
 }

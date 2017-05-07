@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
 
 @Entity
 public class EventImage extends BaseEntity {
@@ -26,6 +27,10 @@ public class EventImage extends BaseEntity {
 
     @NotNull
     private Date date_taken;
+
+    protected EventImage() {
+        super();
+    }
 
     public EventImage(String caption, String path, Date path_small, Date date_taken) {
         this.caption = caption;

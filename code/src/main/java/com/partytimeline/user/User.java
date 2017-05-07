@@ -2,12 +2,15 @@ package com.partytimeline.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.partytimeline.core.BaseEntity;
+import com.partytimeline.event.Event;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="event_members")
@@ -46,8 +49,12 @@ public class User extends BaseEntity {
     @JsonIgnore
     private String[] roles;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Event> events;
+
     protected User() {
         super();
+        events = new HashSet<>();
     }
 
     public User(String email, String name, String password, String[] roles) {
@@ -88,5 +95,16 @@ public class User extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+        if (!event.getUsers().contains(this)) {
+            event.addUser(this);
+        }
     }
 }
