@@ -28,7 +28,7 @@ public class EventImage extends BaseEntity {
     @NotNull
     @Column(unique = true)
     @Size(min = 2, max = 128)
-    private Date path_small;
+    private String path_small;
 
     @NotNull
     private Date date_taken;
@@ -43,7 +43,7 @@ public class EventImage extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    public EventImage(String caption, String path, Date path_small, Date date_taken) {
+    public EventImage(String caption, String path, String path_small, Date date_taken) {
         this();
         this.caption = caption;
         this.path = path;
@@ -67,11 +67,11 @@ public class EventImage extends BaseEntity {
         this.path = path;
     }
 
-    public Date getPathSmall() {
+    public String getPathSmall() {
         return path_small;
     }
 
-    public void setPathSmall(Date path_small) {
+    public void setPathSmall(String path_small) {
         this.path_small = path_small;
     }
 
