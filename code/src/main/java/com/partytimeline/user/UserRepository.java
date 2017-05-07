@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(@Param("email") String email);
 
     @RestResource(rel = "name", path = "name")
-    User findByName(@Param("firstname") String name);
+    User findByName(@Param("name") String name);
 
     // We can also specificy custom queries
     //@Query( "select o from MyObject o where inventoryId in :ids" )

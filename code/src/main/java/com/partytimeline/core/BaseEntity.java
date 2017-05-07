@@ -28,7 +28,7 @@ public abstract class BaseEntity {
     protected void onCreate() {
         Date new_date = new Date();
         this.date_created = new_date;
-        this.date_created = new_date;
+        this.date_modified = new_date;
     }
 
     @PreUpdate
