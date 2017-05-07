@@ -5,8 +5,6 @@ import java.util.Date;
 
 public class EventImageDTO {
     private String caption;
-    private String path;
-    private String path_small;
     private Date date_taken;
     private File image_file;
     private Long event_id;
@@ -15,10 +13,8 @@ public class EventImageDTO {
 
     }
 
-    public EventImageDTO(String caption, String path, String path_small, Date date_taken, File image_file, Long event_id) {
+    public EventImageDTO(String caption, Date date_taken, File image_file, Long event_id) {
         this.caption = caption;
-        this.path = path;
-        this.path_small = path_small;
         this.date_taken = date_taken;
         this.image_file = image_file;
         this.event_id = event_id;
@@ -30,22 +26,6 @@ public class EventImageDTO {
 
     public void setCaption(String caption) {
         this.caption = caption;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getPath_small() {
-        return path_small;
-    }
-
-    public void setPath_small(String path_small) {
-        this.path_small = path_small;
     }
 
     public Date getDate_taken() {

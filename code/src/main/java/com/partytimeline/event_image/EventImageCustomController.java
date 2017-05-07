@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.File;
 import java.util.List;
 
 @Controller
@@ -37,9 +38,14 @@ public class EventImageCustomController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(auth.getName());
 
-            EventImage eventImage = new EventImage(eventImageDTO.getCaption(), eventImageDTO.getPath(), eventImageDTO.getPath_small(), eventImageDTO.getDate_taken());
-
+            EventImage eventImage = new EventImage(eventImageDTO.getCaption(), "", "", eventImageDTO.getDate_taken());
             eventImage.setUser(user);
+
+            File image_file = eventImageDTO.getImage_file();
+            if (image_file != null) {
+                eventImage.setPath(image_file.getAbsolutePath());
+                eventImage.setPathSmall(image_file.getPath());
+            }
 
             if (eventImageDTO.getEvent_id() != null) {
                 Event event = eventRepository.findOne(eventImageDTO.getEvent_id());
@@ -48,6 +54,7 @@ public class EventImageCustomController {
                 }
             }
 
+            eventImageRepository.save(eventImage);
             return ResponseEntity.ok(eventImage.getId());
         }
         else {
