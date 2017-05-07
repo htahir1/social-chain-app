@@ -23,7 +23,7 @@ public class DatabaseLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         try {
-            users.save(new User("partytimeline_app", "Party", "Animal", "QUxg3jiQ3132J7T6380650NH6n89YT", new String[] {User.ROLES.ADMIN.toString()}));
+            users.save(new User("partytimeline_app@gmail.com", "Party", "QUxg3jiQ3132J7T6380650NH6n89YT", new String[] {User.ROLES.ADMIN.toString()}));
         }
         catch (Exception e) {
             log.debug("Users Exception = {}", e.toString());

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="app_user")
+@Table(name="event_members")
 public class User extends BaseEntity {
     public static final PasswordEncoder PASSWORD_ENCODER =  new BCryptPasswordEncoder();
 
@@ -30,16 +30,13 @@ public class User extends BaseEntity {
         }
     }
 
-    @Size(min = 2, max = 140)
-    private String firstName;
-
-    @Size(min = 2, max = 140)
-    private String lastName;
-
     @NotNull
     @Column(unique = true)
     @Size(min = 2, max = 140)
-    private String username;
+    private String email;
+
+    @Size(min = 2, max = 140)
+    private String name;
 
     @NotNull
     @JsonIgnore
@@ -53,11 +50,10 @@ public class User extends BaseEntity {
         super();
     }
 
-    public User(String username, String firstName, String lastName, String password, String[] roles) {
+    public User(String email, String name, String password, String[] roles) {
         this();
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.email = email;
+        this.name = name;
         setPassword(password);
         this.roles = roles;
     }
@@ -66,28 +62,12 @@ public class User extends BaseEntity {
         this.password = PASSWORD_ENCODER.encode(password);
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String firstName) {
+        this.name = firstName;
     }
 
     public String getPassword() {
@@ -100,5 +80,13 @@ public class User extends BaseEntity {
 
     public void setRoles(String[] roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
