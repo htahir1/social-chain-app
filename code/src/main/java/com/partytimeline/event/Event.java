@@ -1,6 +1,7 @@
 package com.partytimeline.event;
 
 import com.partytimeline.core.BaseEntity;
+import com.partytimeline.event_image.EventImage;
 import com.partytimeline.user.User;
 
 import javax.persistence.*;
@@ -29,9 +30,13 @@ public class Event extends BaseEntity {
     @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL)
     private Set<User> users;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<EventImage> event_images;
+
     protected Event() {
         super();
         users = new HashSet<>();
+        event_images = new HashSet<>();
     }
     public Event(String name, String description, Date start_time, Date end_time) {
         this.name = name;
@@ -83,4 +88,14 @@ public class Event extends BaseEntity {
         }
     }
 
+    public Set<EventImage> getImages() {
+        return event_images;
+    }
+
+    public void addImage(EventImage event_image) {
+        event_images.add(event_image);
+        if (event_image.getEvent() != this) {
+            event_image.setEvent(this);
+        }
+    }
 }

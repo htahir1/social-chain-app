@@ -1,13 +1,18 @@
 package com.partytimeline.event_image;
 
 import com.partytimeline.core.BaseEntity;
+import com.partytimeline.event.Event;
+import com.partytimeline.user.User;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class EventImage extends BaseEntity {
@@ -31,6 +36,12 @@ public class EventImage extends BaseEntity {
     protected EventImage() {
         super();
     }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Event event;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
 
     public EventImage(String caption, String path, Date path_small, Date date_taken) {
         this.caption = caption;
@@ -69,5 +80,21 @@ public class EventImage extends BaseEntity {
 
     public void setDateTaken(Date date_taken) {
         this.date_taken = date_taken;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

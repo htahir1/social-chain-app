@@ -3,6 +3,7 @@ package com.partytimeline.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.event.Event;
+import com.partytimeline.event_image.EventImage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -52,9 +53,13 @@ public class User extends BaseEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Event> events;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<EventImage> event_images;
+
     protected User() {
         super();
         events = new HashSet<>();
+        event_images = new HashSet<>();
     }
 
     public User(String email, String name, String password, String[] roles) {
@@ -105,6 +110,17 @@ public class User extends BaseEntity {
         events.add(event);
         if (!event.getUsers().contains(this)) {
             event.addUser(this);
+        }
+    }
+
+    public Set<EventImage> getImages() {
+        return event_images;
+    }
+
+    public void addImage(EventImage event_image) {
+        event_images.add(event_image);
+        if (event_image.getUser() != this) {
+            event_image.setUser(this);
         }
     }
 }
