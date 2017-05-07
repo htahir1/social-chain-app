@@ -8,14 +8,11 @@ import org.springframework.data.rest.core.annotation.RestResource;
 @RepositoryRestResource(exported = false)
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @RestResource(rel = "username", path = "username")
-    User findByUsername(@Param("username") String username);
+    @RestResource(rel = "email", path = "email")
+    User findByEmail(@Param("email") String email);
 
-    @RestResource(rel = "firstname", path = "firstname")
-    User findByfirstName(@Param("firstname") String firstName);
-
-    @RestResource(rel = "lastname", path = "lastname")
-    User findBylastName(@Param("lastname") String lastName);
+    @RestResource(rel = "name", path = "name")
+    User findByName(@Param("firstname") String name);
 
     // We can also specificy custom queries
     //@Query( "select o from MyObject o where inventoryId in :ids" )
