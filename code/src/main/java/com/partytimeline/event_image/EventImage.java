@@ -44,6 +44,7 @@ public class EventImage extends BaseEntity {
     private User user;
 
     public EventImage(String caption, String path, Date path_small, Date date_taken) {
+        this();
         this.caption = caption;
         this.path = path;
         this.path_small = path_small;
