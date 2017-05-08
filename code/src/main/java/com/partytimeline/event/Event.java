@@ -1,5 +1,6 @@
 package com.partytimeline.event;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.event_image.EventImage;
 import com.partytimeline.user.User;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name="events")
 public class Event extends BaseEntity {
     @NotNull
     @Size(min = 2, max = 140)
@@ -21,9 +23,11 @@ public class Event extends BaseEntity {
     @Size(min = 2, max = 500)
     private String description;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @NotNull
     private Date start_time;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @NotNull
     private Date end_time;
 

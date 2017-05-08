@@ -1,13 +1,11 @@
 package com.partytimeline.event_image;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.event.Event;
 import com.partytimeline.user.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -15,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name="event_images")
 public class EventImage extends BaseEntity {
     @NotNull
     @Size(min = 2, max = 500)
@@ -31,6 +30,7 @@ public class EventImage extends BaseEntity {
     private String path_small;
 
     @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date date_taken;
 
     protected EventImage() {
