@@ -1,6 +1,11 @@
 group 'com.partytimeline'
 version '1.0-SNAPSHOT'
 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -21,11 +26,6 @@ repositories {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
 
 dependencies {
 //    compile files('lib/protobuf-gradle-plugin-0.8.0.jar')
