@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 
 public class EventImageDTO {
+    private Long id;
     private String caption;
     private Date date_taken;
     private File image_file;
@@ -18,6 +19,14 @@ public class EventImageDTO {
         this.date_taken = date_taken;
         this.image_file = image_file;
         this.event_id = event_id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCaption() {

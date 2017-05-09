@@ -2,6 +2,7 @@ package com.partytimeline.core;
 
 import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
+import com.partytimeline.hello.UserSession;
 import com.partytimeline.user.User;
 import com.partytimeline.user.UserRepository;
 import org.slf4j.Logger;
@@ -11,6 +12,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
 import java.util.Date;
 
 @Component
@@ -29,9 +34,16 @@ public class DatabaseLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         try {
-            User user = new User("partytimeline_app@gmail.com", "Party", "QUxg3jiQ3132J7T6380650NH6n89YT", new String[] {User.ROLES.ADMIN.toString()});
-            Event event = new Event("Event 1", "Description", new Date(), new Date());
+            log.debug("adding default event and default user");
+            User user = new User(1L, "partytimeline_app@gmail.com", "Party", "QUxg3jiQ3132J7T6380650NH6n89YT", new String[] {User.ROLES.ADMIN.toString()});
+            UserSession session = new UserSession(1039217011023L, user, Date.from(Instant.now().plus(60, ChronoUnit.DAYS)));
+            Event event = new Event(2L, "Event 1", "Description", new Date(), new Date());
+
+            user.addUserSession(session);
+
             event.addUser(user);
+
+
             events.save(event);
             users.save(user);
         }

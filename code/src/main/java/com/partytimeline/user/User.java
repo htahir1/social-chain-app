@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.event.Event;
 import com.partytimeline.event_image.EventImage;
+import com.partytimeline.hello.UserSession;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -16,9 +17,13 @@ import java.util.Set;
 @Entity
 @Table(name="event_members")
 public class User extends BaseEntity {
+
+    public final static String ColumnEmail = "email";
+    public final static String ColumnName = "name";
+
     public static final PasswordEncoder PASSWORD_ENCODER =  new BCryptPasswordEncoder();
 
-    public static enum ROLES {
+    public enum ROLES {
         ADMIN("ROLE_ADMIN"),
         NORMAL("ROLE_USER");
 
@@ -35,13 +40,16 @@ public class User extends BaseEntity {
     }
 
     @NotNull
-    @Column(unique = true)
+    @Column(name = ColumnEmail, unique = true)
     @Size(min = 2, max = 140)
     private String email;
 
+    @NotNull
+    @Column(name=ColumnName)
     @Size(min = 2, max = 140)
     private String name;
 
+    // TODO: replace password with facebook token
     @NotNull
     @JsonIgnore
     private String password;
@@ -56,14 +64,19 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private Set<EventImage> event_images;
 
+    @OneToMany(mappedBy = UserSession.FieldUserId, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserSession> userSessions;
+
     protected User() {
         super();
         events = new HashSet<>();
         event_images = new HashSet<>();
+        userSessions = new HashSet<>();
     }
 
-    public User(String email, String name, String password, String[] roles) {
+    public User(Long id, String email, String name, String password, String[] roles) {
         this();
+        this.setId(id);
         this.email = email;
         this.name = name;
         setPassword(password);
@@ -122,5 +135,13 @@ public class User extends BaseEntity {
         if (event_image.getUser() != this) {
             event_image.setUser(this);
         }
+    }
+
+    public Set<UserSession> getUserSessions() {
+        return userSessions;
+    }
+
+    public void addUserSession(UserSession session) {
+        userSessions.add(session);
     }
 }
