@@ -18,12 +18,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/partytimeline/api/v1/event_image")
-public class EventImageCustomController {
+public class EventImageController {
     private final UserRepository userRepository;
     private final EventImageRepository eventImageRepository;
     private final EventRepository eventRepository;
+
     @Autowired
-    public EventImageCustomController(UserRepository userRepository, EventImageRepository eventImageRepository, EventRepository eventRepository) {
+    public EventImageController(UserRepository userRepository, EventImageRepository eventImageRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;
         this.eventImageRepository = eventImageRepository;
         this.eventRepository = eventRepository;
@@ -38,7 +39,7 @@ public class EventImageCustomController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User user = userRepository.findByEmail(auth.getName());
 
-            EventImage eventImage = new EventImage(eventImageDTO.getCaption(), "", "", eventImageDTO.getDate_taken());
+            EventImage eventImage = new EventImage(eventImageDTO.getId(), eventImageDTO.getCaption(), "", "", eventImageDTO.getDate_taken());
             eventImage.setUser(user);
 
             File image_file = eventImageDTO.getImage_file();
@@ -56,8 +57,7 @@ public class EventImageCustomController {
 
             eventImageRepository.save(eventImage);
             return ResponseEntity.ok(eventImage.getId());
-        }
-        else {
+        } else {
             return ResponseEntity.unprocessableEntity().build();
         }
     }

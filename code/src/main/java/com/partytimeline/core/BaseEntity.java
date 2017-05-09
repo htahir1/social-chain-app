@@ -1,19 +1,32 @@
 package com.partytimeline.core;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @MappedSuperclass
 public abstract class BaseEntity {
+
+    public final static String ColumnId = "id";
+    public final static String ColumnDateCreated = "date_created";
+    public final static String ColumnDateModified = "dateModified";
+    public final static String ColumnVersion = "version";
+
+    @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private final Long id;
+    @Column(name = ColumnId, nullable = false)
+    private Long id;
 
-    private Date date_created;
+    @NotNull
+    @Column(name = ColumnDateCreated, nullable = false)
+    private Date dateCreated;
 
-    private Date date_modified;
+    @NotNull
+    @Column(name = ColumnDateModified, nullable = false)
+    private Date dateModified;
 
     @Version
+    @Column(name = ColumnVersion)
     private Long version;
 
     protected BaseEntity() {
@@ -24,15 +37,21 @@ public abstract class BaseEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @PrePersist
     protected void onCreate() {
         Date new_date = new Date();
-        this.date_created = new_date;
-        this.date_modified = new_date;
+        this.dateCreated = new_date;
+        this.dateModified = new_date;
+        this.version = 1L;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.date_modified = new Date();
+        this.dateModified = new Date();
+        this.version ++;
     }
 }

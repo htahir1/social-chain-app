@@ -42,8 +42,9 @@ public class Event extends BaseEntity {
         users = new HashSet<>();
         event_images = new HashSet<>();
     }
-    public Event(String name, String description, Date start_time, Date end_time) {
+    public Event(Long id, String name, String description, Date start_time, Date end_time) {
         this();
+        this.setId(id);
         this.name = name;
         this.description = description;
         this.start_time = start_time;

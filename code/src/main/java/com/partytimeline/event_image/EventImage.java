@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="event_images")
+@Table(name = "event_images")
 public class EventImage extends BaseEntity {
     @NotNull
     @Size(min = 2, max = 500)
@@ -30,12 +30,8 @@ public class EventImage extends BaseEntity {
     private String path_small;
 
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date_taken;
-
-    protected EventImage() {
-        super();
-    }
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Event event;
@@ -43,8 +39,13 @@ public class EventImage extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    public EventImage(String caption, String path, String path_small, Date date_taken) {
+    protected EventImage() {
+        super();
+    }
+
+    public EventImage(Long id, String caption, String path, String path_small, Date date_taken) {
         this();
+        this.setId(id);
         this.caption = caption;
         this.path = path;
         this.path_small = path_small;
