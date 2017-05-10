@@ -1,23 +1,24 @@
 package com.partytimeline.event_image;
 
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Date;
 
 public class EventImageDTO {
     private Long id;
     private String caption;
     private Date date_taken;
-    private File image_file;
+    private MultipartFile file;
     private Long event_id;
 
     public EventImageDTO() {
 
     }
 
-    public EventImageDTO(String caption, Date date_taken, File image_file, Long event_id) {
+    public EventImageDTO(String caption, Date date_taken, MultipartFile file, Long event_id) {
         this.caption = caption;
         this.date_taken = date_taken;
-        this.image_file = image_file;
+        this.file = file;
         this.event_id = event_id;
     }
 
@@ -45,12 +46,12 @@ public class EventImageDTO {
         this.date_taken = date_taken;
     }
 
-    public File getImage_file() {
-        return image_file;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public void setImage_file(File image_file) {
-        this.image_file = image_file;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public Long getEvent_id() {

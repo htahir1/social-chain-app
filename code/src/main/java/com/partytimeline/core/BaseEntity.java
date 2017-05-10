@@ -14,8 +14,9 @@ public abstract class BaseEntity {
 
     @NotNull
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = ColumnId, nullable = false)
-    private Long id;
+    private final Long id;
 
     @NotNull
     @Column(name = ColumnDateCreated, nullable = false)
@@ -35,10 +36,6 @@ public abstract class BaseEntity {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @PrePersist

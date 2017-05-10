@@ -15,18 +15,17 @@ import java.util.Set;
 @Entity
 @Table(name = "event_images")
 public class EventImage extends BaseEntity {
-    @NotNull
-    @Size(min = 2, max = 500)
+    @Size(max = 500)
     private String caption;
 
     @NotNull
     @Column(unique = true)
-    @Size(min = 2, max = 500)
+    @Size(max = 500)
     private String path;
 
     @NotNull
     @Column(unique = true)
-    @Size(min = 2, max = 128)
+    @Size(max = 128)
     private String path_small;
 
     @NotNull
@@ -43,9 +42,8 @@ public class EventImage extends BaseEntity {
         super();
     }
 
-    public EventImage(Long id, String caption, String path, String path_small, Date date_taken) {
+    public EventImage(String caption, String path, String path_small, Date date_taken) {
         this();
-        this.setId(id);
         this.caption = caption;
         this.path = path;
         this.path_small = path_small;

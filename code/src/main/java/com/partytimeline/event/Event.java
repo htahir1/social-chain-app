@@ -44,7 +44,6 @@ public class Event extends BaseEntity {
     }
     public Event(Long id, String name, String description, Date start_time, Date end_time) {
         this();
-        this.setId(id);
         this.name = name;
         this.description = description;
         this.start_time = start_time;

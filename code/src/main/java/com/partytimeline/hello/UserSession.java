@@ -35,7 +35,6 @@ public class UserSession extends BaseEntity {
 
     public UserSession(Long facebookToken, User user, Date expiresOn) {
         super();
-        this.setId(facebookToken);
         this.user = user;
         this.expiresOn = expiresOn;
     }
