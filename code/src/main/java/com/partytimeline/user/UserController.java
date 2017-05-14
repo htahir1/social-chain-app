@@ -26,14 +26,19 @@ public class UserController {
     @RequestMapping(value="/login", method=RequestMethod.POST)
     public ResponseEntity login(@RequestBody UserDTO userDTO) {
         if (userDTO != null) {
-            User user = userRepository.findOne(userDTO.getId());
+            User user = userRepository.findOne(userDTO.getUser_id());
             if (user == null) {// new user
-                user = new User(user.getId(), user.getEmail(), user.getName(), "", new String[] {User.ROLES.NORMAL.toString()});
+                user = new User(userDTO.getUser_id(), userDTO.getEmail_address(), userDTO.getName(), "", new String[] {User.ROLES.NORMAL.toString()});
+                userRepository.save(user);
             }
             ArrayList<UserSession> userSessions = (ArrayList) userSessionRepository.findByUser(user);
             if (userSessions.size() == 0) {
                 UserSession userSession = new UserSession(userDTO.getAccess_token(), user, userDTO.getExpires_on_date());
                 user.addUserSession(userSession);
+                userRepository.save(user);
+            }
+            else {
+                // TODO: Handle multiple session instances
             }
             return ResponseEntity.ok(user.getId());
         }

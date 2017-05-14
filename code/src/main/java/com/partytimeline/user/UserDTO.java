@@ -3,41 +3,38 @@ package com.partytimeline.user;
 import java.util.Date;
 
 public class UserDTO {
-    private Long Id;
     private String email_address;
     private String name;
-    private Integer expires_in;
     private Long expires_on;
-    private Long access_token;
+    private String access_token;
+    private Long user_id;
 
-    public UserDTO(Long id, String email_address, String name, Integer expires_in, Long expires_on, Long access_token) {
-        Id = id;
+    public UserDTO(String email_address, String name, Long expires_on, String access_token, Long user_id) {
         this.email_address = email_address;
         this.name = name;
-        this.expires_in = expires_in;
         this.expires_on = expires_on;
         this.access_token = access_token;
+        this.user_id = user_id;
     }
 
     public UserDTO() {
 
     }
 
-    public Long getAccess_token() {
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getAccess_token() {
         return access_token;
     }
 
-    public void setAccess_token(Long access_token) {
+    public void setAccess_token(String access_token) {
         this.access_token = access_token;
-    }
-
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
     }
 
     public String getEmail_address() {
@@ -54,14 +51,6 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getExpires_in() {
-        return expires_in;
-    }
-
-    public void setExpires_in(Integer expires_in) {
-        this.expires_in = expires_in;
     }
 
     public Long getExpires_on() {
