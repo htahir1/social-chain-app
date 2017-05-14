@@ -16,6 +16,12 @@ import java.util.Set;
 @Table(name="events")
 public class Event extends BaseEntity {
     @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = ColumnId, nullable = false)
+    private final Long id;
+    
+    @NotNull
     @Size(min = 2, max = 140)
     private String name;
 
@@ -41,6 +47,7 @@ public class Event extends BaseEntity {
         super();
         users = new HashSet<>();
         event_images = new HashSet<>();
+        id = null;
     }
     public Event(Long id, String name, String description, Date start_time, Date end_time) {
         this();
@@ -102,5 +109,9 @@ public class Event extends BaseEntity {
         if (event_image.getEvent() != this) {
             event_image.setEvent(this);
         }
+    }
+
+    public Long getId() {
+        return id;
     }
 }

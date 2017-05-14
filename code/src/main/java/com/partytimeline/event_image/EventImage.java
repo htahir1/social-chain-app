@@ -15,6 +15,12 @@ import java.util.Set;
 @Entity
 @Table(name = "event_images")
 public class EventImage extends BaseEntity {
+    @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = ColumnId, nullable = false)
+    private final Long id;
+
     @Size(max = 500)
     private String caption;
 
@@ -40,6 +46,7 @@ public class EventImage extends BaseEntity {
 
     protected EventImage() {
         super();
+        id = null;
     }
 
     public EventImage(String caption, String path, String path_small, Date date_taken) {
@@ -96,5 +103,9 @@ public class EventImage extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

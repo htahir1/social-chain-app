@@ -22,6 +22,11 @@ public class UserSession extends BaseEntity {
     @JoinColumn(name = ColumnUserId, nullable = false)
     private User user;
 
+    @Id
+    @NotNull
+    @Column(name = ColumnFacebookToken, nullable = false)
+    private Long facebookToken;
+
     @NotNull
     @Column(name = ColumnExpiresOn, nullable = false)
     private Date expiresOn;
@@ -37,6 +42,7 @@ public class UserSession extends BaseEntity {
         super();
         this.user = user;
         this.expiresOn = expiresOn;
+        this.facebookToken = facebookToken;
     }
 
     public User getUser() {
@@ -53,5 +59,13 @@ public class UserSession extends BaseEntity {
 
     public void setExpiresOn(Date expiresOn) {
         this.expiresOn = expiresOn;
+    }
+
+    public Long getFacebookToken() {
+        return facebookToken;
+    }
+
+    public void setFacebookToken(Long facebookToken) {
+        this.facebookToken = facebookToken;
     }
 }

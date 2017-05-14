@@ -13,12 +13,6 @@ public abstract class BaseEntity {
     public final static String ColumnVersion = "version";
 
     @NotNull
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = ColumnId, nullable = false)
-    private final Long id;
-
-    @NotNull
     @Column(name = ColumnDateCreated, nullable = false)
     private Date dateCreated;
 
@@ -29,14 +23,6 @@ public abstract class BaseEntity {
     @Version
     @Column(name = ColumnVersion)
     private Long version;
-
-    protected BaseEntity() {
-        id = null;
-    }
-
-    public Long getId() {
-        return id;
-    }
 
     @PrePersist
     protected void onCreate() {

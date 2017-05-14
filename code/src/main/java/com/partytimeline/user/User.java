@@ -17,6 +17,10 @@ import java.util.Set;
 @Entity
 @Table(name="event_members")
 public class User extends BaseEntity {
+    @NotNull
+    @Id
+    @Column(name = ColumnId, nullable = false)
+    private Long id;
 
     public final static String ColumnEmail = "email";
     public final static String ColumnName = "name";
@@ -76,6 +80,7 @@ public class User extends BaseEntity {
 
     public User(Long id, String email, String name, String password, String[] roles) {
         this();
+        this.id = id;
         this.email = email;
         this.name = name;
         setPassword(password);
@@ -142,5 +147,13 @@ public class User extends BaseEntity {
 
     public void addUserSession(UserSession session) {
         userSessions.add(session);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
