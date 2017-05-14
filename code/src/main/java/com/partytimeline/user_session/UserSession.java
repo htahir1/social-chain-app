@@ -1,4 +1,4 @@
-package com.partytimeline.hello;
+package com.partytimeline.user_session;
 
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.user.User;

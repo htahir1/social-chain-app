@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.event.Event;
 import com.partytimeline.event_image.EventImage;
-import com.partytimeline.hello.UserSession;
+import com.partytimeline.user_session.UserSession;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

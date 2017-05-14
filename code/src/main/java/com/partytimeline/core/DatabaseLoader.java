@@ -2,9 +2,9 @@ package com.partytimeline.core;
 
 import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
-import com.partytimeline.hello.UserSession;
 import com.partytimeline.user.User;
 import com.partytimeline.user.UserRepository;
+import com.partytimeline.user_session.UserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
 import java.util.Date;
 
 @Component
@@ -42,7 +40,6 @@ public class DatabaseLoader implements ApplicationRunner {
             user.addUserSession(session);
 
             event.addUser(user);
-
 
             events.save(event);
             users.save(user);
