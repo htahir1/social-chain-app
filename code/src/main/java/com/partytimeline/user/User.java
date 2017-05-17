@@ -53,8 +53,6 @@ public class User extends BaseEntity {
     @Size(min = 2, max = 140)
     private String name;
 
-    // TODO: replace password with facebook token
-    @NotNull
     @JsonIgnore
     private String password;
 
@@ -78,12 +76,11 @@ public class User extends BaseEntity {
         userSessions = new HashSet<>();
     }
 
-    public User(Long id, String email, String name, String password, String[] roles) {
+    public User(Long id, String email, String name, String[] roles) {
         this();
         this.id = id;
         this.email = email;
         this.name = name;
-        setPassword(password);
         this.roles = roles;
     }
 
@@ -147,6 +144,9 @@ public class User extends BaseEntity {
 
     public void addUserSession(UserSession session) {
         userSessions.add(session);
+        if (session.getUser() != this) {
+            session.setUser(this);
+        }
     }
 
     public Long getId() {

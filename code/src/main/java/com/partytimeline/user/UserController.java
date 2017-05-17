@@ -28,12 +28,12 @@ public class UserController {
         if (userDTO != null) {
             User user = userRepository.findOne(userDTO.getUser_id());
             if (user == null) {// new user
-                user = new User(userDTO.getUser_id(), userDTO.getEmail_address(), userDTO.getName(), "", new String[] {User.ROLES.NORMAL.toString()});
+                user = new User(userDTO.getUser_id(), userDTO.getEmail_address(), userDTO.getName(), new String[] {User.ROLES.NORMAL.toString()});
                 userRepository.save(user);
             }
             ArrayList<UserSession> userSessions = (ArrayList) userSessionRepository.findByUser(user);
             if (userSessions.size() == 0) {
-                UserSession userSession = new UserSession(userDTO.getAccess_token(), user, userDTO.getExpires_on_date());
+                UserSession userSession = new UserSession(userDTO.getAccess_token(), userDTO.getExpires_on_date());
                 user.addUserSession(userSession);
                 userRepository.save(user);
             }

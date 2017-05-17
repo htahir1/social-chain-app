@@ -38,9 +38,8 @@ public class UserSession extends BaseEntity {
         super();
     }
 
-    public UserSession(String facebookToken, User user, Date expiresOn) {
+    public UserSession(String facebookToken, Date expiresOn) {
         super();
-        this.user = user;
         this.expiresOn = expiresOn;
         this.facebookToken = facebookToken;
     }
@@ -51,6 +50,9 @@ public class UserSession extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+        if (!user.getUserSessions().contains(this)) {
+            user.addUserSession(this);
+        }
     }
 
     public Date getExpiresOn() {
