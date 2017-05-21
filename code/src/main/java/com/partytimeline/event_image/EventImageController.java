@@ -4,6 +4,8 @@ import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
 import com.partytimeline.user.User;
 import com.partytimeline.user.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,10 @@ public class EventImageController {
     private final EventRepository eventRepository;
     private final String upload_path_original = "images/original_images/";
     private final String upload_path_small = "images/small_images/";
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+
 
     @Autowired
     public EventImageController(UserRepository userRepository, EventImageRepository eventImageRepository, EventRepository eventRepository) {
@@ -50,8 +56,11 @@ public class EventImageController {
             }
             eventImageRepository.save(eventImage);
 
+            log.info("addEventImageMetadata succeeded with event id: {}", eventImageDTO.getEvent_id());
+
             return ResponseEntity.ok(eventImage.getId());
         }
+        log.info("addEventImageMetadata failed with event id: {}", eventImageDTO.getEvent_id());
         return ResponseEntity.badRequest().build();
     }
 
@@ -75,11 +84,13 @@ public class EventImageController {
                     else {
                         eventImage.setPath_original(new_file.getPath());
                     }
+                    log.info("addEventImage succeeded for event_image_id: {} with image path: {}", event_image_id, new_file.getPath());
                     eventImageRepository.save(eventImage);
                     return ResponseEntity.ok(eventImage.getId());
                 }
             }
 
+        log.info("addEventImage failed with event_image_id: {}", event_image_id);
         return ResponseEntity.badRequest().build();
     }
 
@@ -100,16 +111,22 @@ public class EventImageController {
                     path = upload_path_small;
                 }
                 File new_file = new File(path + file.getOriginalFilename());
-                new_file.mkdirs();
+
+                Boolean mkdirs = new_file.mkdirs();
+                log.info("handleFileUpload mkdirs: {}", mkdirs);
+
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new_file));
                 stream.write(bytes);
                 stream.close();
+                log.info("handleFileUpload file created successfully after upload");
                 return new_file;
             } catch (Exception e) {
+                log.info("handleFileUpload file creation failed with exception: {}", e.toString());
                 return null;
             }
         } else {
+            log.info("handleFileUpload file creation failed");
             return null;
         }
     }
