@@ -100,6 +100,7 @@ public class EventImageController {
                     path = upload_path_small;
                 }
                 File new_file = new File(path + file.getOriginalFilename());
+                new_file.mkdirs();
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new_file));
                 stream.write(bytes);
