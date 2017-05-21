@@ -36,6 +36,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'postgresql:postgresql:9.1-901-1.jdbc4'
     compile 'org.springframework.boot:spring-boot-configuration-processor'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-aws-autoconfigure', version: '1.0.0.RELEASE'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
 
     // compile 'org.flywaydb:flyway-core'
     // testCompile 'org.springframework.boot:spring-boot-starter-test'

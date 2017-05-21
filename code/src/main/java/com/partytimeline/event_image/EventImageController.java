@@ -1,7 +1,10 @@
 package com.partytimeline.event_image;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
+import com.partytimeline.helper.S3Wrapper;
 import com.partytimeline.user.User;
 import com.partytimeline.user.UserRepository;
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 @RepositoryRestController
 @RequestMapping(value = "/partytimeline/api/v1/event_image")
@@ -76,18 +80,26 @@ public class EventImageController {
                         eventRepository.findOne(event_id),
                         event_image_id);
 
-                File new_file = handleFileUpload(file, quality);
-                if (new_file != null) {
-                    if (quality.equals("small")) {
-                        eventImage.setPathSmall(new_file.getPath());
-                    }
-                    else {
-                        eventImage.setPath_original(new_file.getPath());
-                    }
-                    log.info("addEventImage succeeded for event_image_id: {} with image path: {}", event_image_id, new_file.getPath());
-                    eventImageRepository.save(eventImage);
-                    return ResponseEntity.ok(eventImage.getId());
+                // File new_file = handleFileUpload(file, quality);
+                S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
+                String path = upload_path_original;
+                if (quality.equals("small")) {
+                    path = upload_path_small;
                 }
+
+                path = path + file.getOriginalFilename();
+
+                s3Wrapper.upload(new MultipartFile[]{file}, path);
+
+                if (quality.equals("small")) {
+                    eventImage.setPathSmall(path);
+                }
+                else {
+                    eventImage.setPath_original(path);
+                }
+                log.info("addEventImage succeeded for event_image_id: {} with image path: {}", event_image_id, path);
+                eventImageRepository.save(eventImage);
+                return ResponseEntity.ok(eventImage.getId());
             }
 
         log.info("addEventImage failed with event_image_id: {}", event_image_id);
