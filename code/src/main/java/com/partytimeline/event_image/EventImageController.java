@@ -56,9 +56,9 @@ public class EventImageController {
     }
 
 
-    @RequestMapping(value="/{id}/{event_id}/{event_member_id}/{quality}", method=RequestMethod.POST)
-    public ResponseEntity addEventImage(@PathVariable("id") Long event_image_id,
-                                        @PathVariable(value="event_id") Long event_id,
+    @RequestMapping(value="/upload", method=RequestMethod.POST)
+    public ResponseEntity addEventImage(@RequestParam("id") Long event_image_id,
+                                        @RequestParam(value="event_id") Long event_id,
                                         @RequestParam(value="event_member_id") Long event_member_id,
                                         @RequestParam(value="quality") String quality,
                                         @RequestParam("event_image_file") MultipartFile file) {
