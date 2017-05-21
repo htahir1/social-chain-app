@@ -1,8 +1,12 @@
 package com.partytimeline.core;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+
+import static com.partytimeline.core.Constants.DATE_FORMAT_STRING;
 
 @MappedSuperclass
 public abstract class BaseEntity {
@@ -14,10 +18,12 @@ public abstract class BaseEntity {
 
     @NotNull
     @Column(name = ColumnDateCreated, nullable = false)
+    @JsonFormat(pattern=DATE_FORMAT_STRING)
     private Date dateCreated;
 
     @NotNull
     @Column(name = ColumnDateModified, nullable = false)
+    @JsonFormat(pattern=DATE_FORMAT_STRING)
     private Date dateModified;
 
     @Version

@@ -35,10 +35,8 @@ public class DatabaseLoader implements ApplicationRunner {
             log.debug("adding default event and default user");
             User user = new User(10206756772397816L, "partytimeline_app@gmail.com", "Party", (new String[]{User.ROLES.ADMIN.toString()}));
             Event event = new Event(648194968710136L, "Event 1", "Description", new Date(), new Date());
-            event.addUser(user);
-
-            events.save(event);
             users.save(user);
+            events.save(event);
         }
         catch (Exception e) {
             log.debug("Users Exception = {}", e.toString());

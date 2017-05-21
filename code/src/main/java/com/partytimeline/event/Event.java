@@ -21,7 +21,7 @@ public class Event extends BaseEntity {
     @Id
     @Column(name = ColumnId, nullable = false)
     private Long id;
-    
+
     @Size(min = 2, max = 140)
     private String name;
 
@@ -35,6 +35,11 @@ public class Event extends BaseEntity {
     @JsonFormat(pattern=DATE_FORMAT_STRING)
     @NotNull
     private Date end_time;
+
+    @JsonFormat(pattern=DATE_FORMAT_STRING)
+    private Date updated_time;
+
+    private String is_canceled;
 
     @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL)
     private Set<User> users;
@@ -113,5 +118,21 @@ public class Event extends BaseEntity {
 
     public Long getId() {
         return id;
+    }
+
+    public Date getUpdated_time() {
+        return updated_time;
+    }
+
+    public void setUpdated_time(Date updated_time) {
+        this.updated_time = updated_time;
+    }
+
+    public String getIs_canceled() {
+        return is_canceled;
+    }
+
+    public void setIs_canceled(String is_canceled) {
+        this.is_canceled = is_canceled;
     }
 }
