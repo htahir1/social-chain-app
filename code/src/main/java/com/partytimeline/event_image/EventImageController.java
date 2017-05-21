@@ -7,16 +7,12 @@ import com.partytimeline.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Date;
 
 @RepositoryRestController
 @RequestMapping(value = "/partytimeline/api/v1/event_image")
@@ -24,7 +20,9 @@ public class EventImageController {
     private final UserRepository userRepository;
     private final EventImageRepository eventImageRepository;
     private final EventRepository eventRepository;
-    private final String path = "images/";
+    private final String upload_path_original = "images/original_images/";
+    private final String upload_path_small = "images/small_images/";
+
     @Autowired
     public EventImageController(UserRepository userRepository, EventImageRepository eventImageRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;
@@ -32,13 +30,17 @@ public class EventImageController {
         this.eventRepository = eventRepository;
     }
 
-    @RequestMapping(value="/event_image_metadata", method=RequestMethod.POST)
+    @RequestMapping(value="/", method=RequestMethod.POST)
     public ResponseEntity addEventImageMetadata(@RequestBody EventImageDTO eventImageDTO) {
         if (eventImageDTO != null) {
-            EventImage eventImage = new EventImage(eventImageDTO.getCaption(), "", "", eventImageDTO.getDate_taken());
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByEmail(auth.getName());
-            eventImage.setUser(user);
+            EventImage eventImage = new EventImage(eventImageDTO.getId(), eventImageDTO.getCaption(), "", "", eventImageDTO.getDate_taken());
+
+            if (eventImageDTO.getEvent_member_id() != null) {
+                User user = userRepository.findOne(eventImageDTO.getEvent_member_id());
+                if (user != null) {
+                    eventImage.setUser(user);
+                }
+            }
 
             if (eventImageDTO.getEvent_id() != null) {
                 Event event = eventRepository.findOne(eventImageDTO.getEvent_id());
@@ -50,26 +52,35 @@ public class EventImageController {
 
             return ResponseEntity.ok(eventImage.getId());
         }
-        return ResponseEntity.unprocessableEntity().build();
+        return ResponseEntity.badRequest().build();
     }
 
-    @RequestMapping(value="/upload_image/{id}", method=RequestMethod.POST)
-    public ResponseEntity addEventImage(@PathVariable("id") Long event_image_id, @RequestParam("event_image_file") MultipartFile file) {
+
+    @RequestMapping(value="/{id}/{event_id}/{event_member_id}/{quality}", method=RequestMethod.POST)
+    public ResponseEntity addEventImage(@PathVariable("id") Long event_image_id,
+                                        @PathVariable(value="event_id") Long event_id,
+                                        @RequestParam(value="event_member_id") Long event_member_id,
+                                        @RequestParam(value="quality") String quality,
+                                        @RequestParam("event_image_file") MultipartFile file) {
             if (file != null) {
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                User user = userRepository.findByEmail(auth.getName());
-                String username = user.getEmail();
-                File new_file = handleFileUpload(file, username, String.valueOf(event_image_id));
+                EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
+                        eventRepository.findOne(event_id),
+                        event_image_id);
+
+                File new_file = handleFileUpload(file, quality);
                 if (new_file != null) {
-                    EventImage eventImage = eventImageRepository.findOne(Long.valueOf(event_image_id));
-                    eventImage.setPath(new_file.getAbsolutePath());
-                    eventImage.setPathSmall(new_file.getPath());
+                    if (quality.equals("small")) {
+                        eventImage.setPathSmall(new_file.getPath());
+                    }
+                    else {
+                        eventImage.setPath_original(new_file.getPath());
+                    }
                     eventImageRepository.save(eventImage);
                     return ResponseEntity.ok(eventImage.getId());
                 }
             }
 
-        return ResponseEntity.unprocessableEntity().build();
+        return ResponseEntity.badRequest().build();
     }
 
     private String getFileExtension(MultipartFile file) {
@@ -81,10 +92,14 @@ public class EventImageController {
         }
     }
 
-    public File handleFileUpload(MultipartFile file, String username, String event_image_id) {
+    public File handleFileUpload(MultipartFile file, String quality) {
         if (!file.isEmpty()) {
+            String path = upload_path_original;
             try {
-                File new_file = new File(path + username + "_" + event_image_id + "." + getFileExtension(file));
+                if (quality.equals("small")) {
+                    path = upload_path_small;
+                }
+                File new_file = new File(path + file.getOriginalFilename());
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new_file));
                 stream.write(bytes);

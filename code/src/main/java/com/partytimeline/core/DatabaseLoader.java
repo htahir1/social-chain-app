@@ -32,17 +32,13 @@ public class DatabaseLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         try {
-//            log.debug("adding default event and default user");
-//            User user = new User(1L, "partytimeline_app@gmail.com", "Party", "QUxg3jiQ3132J7T6380650NH6n89YT", new String[] {User.ROLES.ADMIN.toString()});
-//            UserSession session = new UserSession(1039217011023L, user, Date.from(Instant.now().plus(60, ChronoUnit.DAYS)));
-//            Event event = new Event(2L, "Event 1", "Description", new Date(), new Date());
-//
-//            user.addUserSession(session);
-//
-//            event.addUser(user);
-//
-//            events.save(event);
-//            users.save(user);
+            log.debug("adding default event and default user");
+            User user = new User(10206756772397816L, "partytimeline_app@gmail.com", "Party", (new String[]{User.ROLES.ADMIN.toString()}));
+            Event event = new Event(648194968710136L, "Event 1", "Description", new Date(), new Date());
+            event.addUser(user);
+
+            events.save(event);
+            users.save(user);
         }
         catch (Exception e) {
             log.debug("Users Exception = {}", e.toString());

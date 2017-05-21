@@ -9,17 +9,17 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.TimeZone;
+
+import static com.partytimeline.core.Constants.DATE_FORMAT_STRING;
 
 @Entity
 @Table(name = "event_images")
 public class EventImage extends BaseEntity {
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = ColumnId, nullable = false)
-    private final Long id;
+    private Long id;
 
     @Size(max = 500)
     private String caption;
@@ -27,7 +27,7 @@ public class EventImage extends BaseEntity {
     @NotNull
     @Column(unique = true)
     @Size(max = 500)
-    private String path;
+    private String path_original;
 
     @NotNull
     @Column(unique = true)
@@ -35,7 +35,7 @@ public class EventImage extends BaseEntity {
     private String path_small;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = DATE_FORMAT_STRING)
     private Date date_taken;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -49,10 +49,11 @@ public class EventImage extends BaseEntity {
         id = null;
     }
 
-    public EventImage(String caption, String path, String path_small, Date date_taken) {
+    public EventImage(Long id, String caption, String path_original, String path_small, Date date_taken) {
         this();
+        this.id = id;
         this.caption = caption;
-        this.path = path;
+        this.path_original = path_original;
         this.path_small = path_small;
         this.date_taken = date_taken;
     }
@@ -65,12 +66,12 @@ public class EventImage extends BaseEntity {
         this.caption = caption;
     }
 
-    public String getPath() {
-        return path;
+    public String getPath_original() {
+        return path_original;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPath_original(String path_original) {
+        this.path_original = path_original;
     }
 
     public String getPathSmall() {

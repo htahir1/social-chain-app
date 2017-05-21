@@ -12,28 +12,27 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.partytimeline.core.Constants.DATE_FORMAT_STRING;
+
 @Entity
 @Table(name="events")
 public class Event extends BaseEntity {
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = ColumnId, nullable = false)
-    private final Long id;
+    private Long id;
     
-    @NotNull
     @Size(min = 2, max = 140)
     private String name;
 
-    @NotNull
     @Size(min = 2, max = 500)
     private String description;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern=DATE_FORMAT_STRING)
     @NotNull
     private Date start_time;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern=DATE_FORMAT_STRING)
     @NotNull
     private Date end_time;
 
@@ -51,6 +50,7 @@ public class Event extends BaseEntity {
     }
     public Event(Long id, String name, String description, Date start_time, Date end_time) {
         this();
+        this.id = id;
         this.name = name;
         this.description = description;
         this.start_time = start_time;
