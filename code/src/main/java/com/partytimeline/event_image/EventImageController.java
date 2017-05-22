@@ -1,7 +1,6 @@
 package com.partytimeline.event_image;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
 import com.partytimeline.helper.S3Wrapper;
@@ -12,13 +11,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
+import java.io.IOException;
 
 @RepositoryRestController
 @RequestMapping(value = "/partytimeline/api/v1/event_image")
@@ -30,8 +32,6 @@ public class EventImageController {
     private final String upload_path_small = "images/small_images/";
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-
 
     @Autowired
     public EventImageController(UserRepository userRepository, EventImageRepository eventImageRepository, EventRepository eventRepository) {
@@ -103,6 +103,38 @@ public class EventImageController {
             }
 
         log.info("addEventImage failed with event_image_id: {}", event_image_id);
+        return ResponseEntity.badRequest().build();
+    }
+
+    @RequestMapping(value="/download", method=RequestMethod.POST)
+    public ResponseEntity getEventImage(@RequestParam("id") Long event_image_id,
+                                        @RequestParam(value="event_id") Long event_id,
+                                        @RequestParam(value="event_member_id") Long event_member_id,
+                                        @RequestParam(value="quality") String quality,
+                                        @RequestParam("event_image_file") MultipartFile file) {
+        if (file != null) {
+            EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
+                    eventRepository.findOne(event_id),
+                    event_image_id);
+
+            // File new_file = handleFileUpload(file, quality);
+            S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
+
+            try {
+                if (quality.equals("small")) {
+                    return s3Wrapper.download(eventImage.getPathSmall());
+                }
+                else {
+                    return s3Wrapper.download(eventImage.getPath_original());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            log.info("getEventImage succeeded for event_image_id: {}", event_image_id);
+        }
+
+        log.info("getEventImage failed with event_image_id: {}", event_image_id);
         return ResponseEntity.badRequest().build();
     }
 
