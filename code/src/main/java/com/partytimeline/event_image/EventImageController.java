@@ -76,9 +76,9 @@ public class EventImageController {
                                         @RequestParam(value="quality") String quality,
                                         @RequestParam("event_image_file") MultipartFile file) {
             if (file != null) {
-                EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
-                        eventRepository.findOne(event_id),
-                        event_image_id);
+                User user = userRepository.findOne(event_member_id);
+                Event event = eventRepository.findOne(event_id);
+                EventImage eventImage = eventImageRepository.findOne(event_image_id);
 
                 // File new_file = handleFileUpload(file, quality);
                 S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
@@ -102,7 +102,7 @@ public class EventImageController {
                 return ResponseEntity.ok(eventImage.getId());
             }
 
-        log.info("addEventImage failed with event_image_id: {}", event_image_id);
+            log.info("addEventImage failed with event_image_id: {}", event_image_id);
         return ResponseEntity.badRequest().build();
     }
 
