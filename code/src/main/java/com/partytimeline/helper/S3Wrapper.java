@@ -1,8 +1,14 @@
 package com.partytimeline.helper;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.HttpMethod;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,9 +22,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,10 +36,6 @@ public class S3Wrapper {
     private AmazonS3Client amazonS3Client;
 
     private final String bucket = "elasticbeanstalk-us-west-2-702454840779";
-
-    public S3Wrapper(AmazonS3Client amazonS3Client) {
-        this.amazonS3Client = amazonS3Client;
-    }
 
     private PutObjectResult upload(String filePath, String uploadKey) throws FileNotFoundException {
         return upload(new FileInputStream(filePath), uploadKey);
@@ -84,6 +88,42 @@ public class S3Wrapper {
         return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
     }
 
+    public String generatePresignedUrlRequest(String path) {
+        try {
+            System.out.println("Generating pre-signed URL.");
+
+            GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                    new GeneratePresignedUrlRequest(bucket, path);
+            generatePresignedUrlRequest.setMethod(HttpMethod.GET);
+            generatePresignedUrlRequest.setExpiration(DateTime.now().plusYears(1).toDate());
+
+            URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
+            System.out.println("Pre-Signed URL = " + url.toString());
+            return url.toString();
+        } catch (AmazonServiceException exception) {
+            System.out.println("Caught an AmazonServiceException, " +
+                    "which means your request made it " +
+                    "to Amazon S3, but was rejected with an error response " +
+                    "for some reason.");
+            System.out.println("Error Message: " + exception.getMessage());
+            System.out.println("HTTP  Code: "    + exception.getStatusCode());
+            System.out.println("AWS Error Code:" + exception.getErrorCode());
+            System.out.println("Error Type:    " + exception.getErrorType());
+            System.out.println("Request ID:    " + exception.getRequestId());
+        } catch (AmazonClientException ace) {
+            System.out.println("Caught an AmazonClientException, " +
+                    "which means the client encountered " +
+                    "an internal error while trying to communicate" +
+                    " with S3, " +
+                    "such as not being able to access the network.");
+            System.out.println("Error Message: " + ace.getMessage());
+        }
+        return "ERROR";
+    }
+
+    public String getResourceURL(String key) {
+        return amazonS3Client.getResourceUrl("your-bucket", "some-path/some-key.jpg");
+    }
     public List<S3ObjectSummary> list() {
         ObjectListing objectListing = amazonS3Client.listObjects(new ListObjectsRequest().withBucketName(bucket));
 

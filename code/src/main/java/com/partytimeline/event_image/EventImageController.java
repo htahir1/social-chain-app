@@ -1,9 +1,9 @@
 package com.partytimeline.event_image;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
 import com.partytimeline.helper.S3Wrapper;
+import com.partytimeline.helper.Sha1Hex;
 import com.partytimeline.user.User;
 import com.partytimeline.user.UserRepository;
 import org.slf4j.Logger;
@@ -20,7 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 @RepositoryRestController
 @RequestMapping(value = "/partytimeline/api/v1/event_image")
@@ -28,10 +29,13 @@ public class EventImageController {
     private final UserRepository userRepository;
     private final EventImageRepository eventImageRepository;
     private final EventRepository eventRepository;
-    private final String upload_path_original = "images/original_images/";
-    private final String upload_path_small = "images/small_images/";
-
+    private final String upload_path_original = "event_images/original/";
+    private final String upload_path_small = "event_images/small/";
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private S3Wrapper s3Wrapper;
+
 
     @Autowired
     public EventImageController(UserRepository userRepository, EventImageRepository eventImageRepository, EventRepository eventRepository) {
@@ -78,25 +82,27 @@ public class EventImageController {
             if (file != null) {
                 User user = userRepository.findOne(event_member_id);
                 Event event = eventRepository.findOne(event_id);
-                EventImage eventImage = eventImageRepository.findOne(event_image_id);
 
-                // File new_file = handleFileUpload(file, quality);
-                S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
+                EventImage eventImage = eventImageRepository.findOne(event_image_id);
+                eventImage.setOriginal_name(file.getOriginalFilename());
+
                 String path = upload_path_original;
                 if (quality.equals("small")) {
                     path = upload_path_small;
                 }
 
-                path = path + file.getOriginalFilename();
+                path = path + generateUniqueImagePathHash(user.getName() + event.getName() + quality);
+                String key = path + "/" + file.getOriginalFilename();
 
-                s3Wrapper.upload(new MultipartFile[]{file}, path);
+                s3Wrapper.upload(new MultipartFile[]{file}, key);
 
                 if (quality.equals("small")) {
-                    eventImage.setPathSmall(path);
+                    eventImage.setPath_small(s3Wrapper.getResourceURL(key));
                 }
                 else {
-                    eventImage.setPath_original(path);
+                    eventImage.setPath_original(s3Wrapper.getResourceURL(key));
                 }
+
                 log.info("addEventImage succeeded for event_image_id: {} with image path: {}", event_image_id, path);
                 eventImageRepository.save(eventImage);
                 return ResponseEntity.ok(eventImage.getId());
@@ -106,36 +112,48 @@ public class EventImageController {
         return ResponseEntity.badRequest().build();
     }
 
-    @RequestMapping(value="/download", method=RequestMethod.POST)
-    public ResponseEntity getEventImage(@RequestParam("id") Long event_image_id,
-                                        @RequestParam(value="event_id") Long event_id,
-                                        @RequestParam(value="event_member_id") Long event_member_id,
-                                        @RequestParam(value="quality") String quality) {
-            /*EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
-                    eventRepository.findOne(event_id),
-                    event_image_id);*/
-
-            EventImage eventImage = eventImageRepository.findOne(event_image_id);
-
-            // File new_file = handleFileUpload(file, quality);
-            S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
-
-            try {
-                if (quality.equals("small")) {
-                    return s3Wrapper.download(eventImage.getPathSmall());
-                }
-                else {
-                    return s3Wrapper.download(eventImage.getPath_original());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            log.info("getEventImage succeeded for event_image_id: {}", event_image_id);
-
-        log.info("getEventImage failed with event_image_id: {}", event_image_id);
-        return ResponseEntity.badRequest().build();
+    private String generateUniqueImagePathHash(String input) {
+        String hash = null;
+        try {
+            hash = new Sha1Hex().makeSHA1Hash(input);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return hash;
     }
+
+//    @RequestMapping(value="/download", method=RequestMethod.POST)
+//    public ResponseEntity getEventImage(@RequestParam("id") Long event_image_id,
+//                                        @RequestParam(value="event_id") Long event_id,
+//                                        @RequestParam(value="event_member_id") Long event_member_id,
+//                                        @RequestParam(value="quality") String quality) {
+//            /*EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
+//                    eventRepository.findOne(event_id),
+//                    event_image_id);*/
+//
+//            EventImage eventImage = eventImageRepository.findOne(event_image_id);
+//
+//            // File new_file = handleFileUpload(file, quality);
+//            S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
+//
+//            try {
+//                if (quality.equals("small")) {
+//                    return s3Wrapper.download(eventImage.getPath_small());
+//                }
+//                else {
+//                    return s3Wrapper.download(eventImage.getPath_original());
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            log.info("getEventImage succeeded for event_image_id: {}", event_image_id);
+//
+//        log.info("getEventImage failed with event_image_id: {}", event_image_id);
+//        return ResponseEntity.badRequest().build();
+//    }
 
     private String getFileExtension(MultipartFile file) {
         String name = file.getOriginalFilename();

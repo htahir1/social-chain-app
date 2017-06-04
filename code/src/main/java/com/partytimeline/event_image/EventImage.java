@@ -34,6 +34,10 @@ public class EventImage extends BaseEntity {
     @Size(max = 128)
     private String path_small;
 
+
+    @Size(max = 500)
+    private String original_name;
+
     @NotNull
     @JsonFormat(pattern = DATE_FORMAT_STRING)
     private Date date_taken;
@@ -74,20 +78,12 @@ public class EventImage extends BaseEntity {
         this.path_original = path_original;
     }
 
-    public String getPathSmall() {
+    public String getPath_small() {
         return path_small;
     }
 
-    public void setPathSmall(String path_small) {
+    public void setPath_small(String path_small) {
         this.path_small = path_small;
-    }
-
-    public Date getDateTaken() {
-        return date_taken;
-    }
-
-    public void setDateTaken(Date date_taken) {
-        this.date_taken = date_taken;
     }
 
     public Event getEvent() {
@@ -108,5 +104,13 @@ public class EventImage extends BaseEntity {
 
     public Long getId() {
         return id;
+    }
+
+    public String getOriginal_name() {
+        return original_name;
+    }
+
+    public void setOriginal_name(String original_name) {
+        this.original_name = original_name;
     }
 }
