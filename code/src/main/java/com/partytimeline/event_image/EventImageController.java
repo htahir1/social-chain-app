@@ -110,12 +110,12 @@ public class EventImageController {
     public ResponseEntity getEventImage(@RequestParam("id") Long event_image_id,
                                         @RequestParam(value="event_id") Long event_id,
                                         @RequestParam(value="event_member_id") Long event_member_id,
-                                        @RequestParam(value="quality") String quality,
-                                        @RequestParam("event_image_file") MultipartFile file) {
-        if (file != null) {
-            EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
+                                        @RequestParam(value="quality") String quality) {
+            /*EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
                     eventRepository.findOne(event_id),
-                    event_image_id);
+                    event_image_id);*/
+
+            EventImage eventImage = eventImageRepository.findOne(event_image_id);
 
             // File new_file = handleFileUpload(file, quality);
             S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
@@ -132,7 +132,6 @@ public class EventImageController {
             }
 
             log.info("getEventImage succeeded for event_image_id: {}", event_image_id);
-        }
 
         log.info("getEventImage failed with event_image_id: {}", event_image_id);
         return ResponseEntity.badRequest().build();
