@@ -1,6 +1,7 @@
 package com.partytimeline.event_image;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.event.Event;
 import com.partytimeline.user.User;
@@ -44,6 +45,7 @@ public class EventImage extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private Event event;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 

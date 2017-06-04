@@ -1,5 +1,6 @@
 package com.partytimeline.event_image;
 
+import com.amazonaws.util.json.JSONObject;
 import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
 import com.partytimeline.helper.S3Wrapper;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +56,10 @@ public class EventImageController {
                 if (user != null) {
                     eventImage.setUser(user);
                 }
+                else {
+                    log.info("addEventImageMetadata failed with event id: {} because user was null", eventImageDTO.getEvent_id());
+                    return new ResponseEntity<String>("User not found for specified User ID", HttpStatus.EXPECTATION_FAILED);
+                }
             }
 
             if (eventImageDTO.getEvent_id() != null) {
@@ -61,15 +67,18 @@ public class EventImageController {
                 if (event != null) {
                     eventImage.setEvent(event);
                 }
+                else {
+                    log.info("addEventImageMetadata failed with event id: {} because event was null", eventImageDTO.getEvent_id());
+                    return new ResponseEntity<String>("Event not found for specified Event ID", HttpStatus.EXPECTATION_FAILED);
+                }
             }
             eventImageRepository.save(eventImage);
 
             log.info("addEventImageMetadata succeeded with event id: {}", eventImageDTO.getEvent_id());
-
-            return ResponseEntity.ok(eventImage.getId());
+            return new ResponseEntity<Long>(eventImage.getId(), HttpStatus.OK);
         }
-        log.info("addEventImageMetadata failed with event id: {}", eventImageDTO.getEvent_id());
-        return ResponseEntity.badRequest().build();
+        log.info("addEventImageMetadata failed with event id: {} because EventImageDTO is null", eventImageDTO.getEvent_id());
+        return new ResponseEntity<String>("Could not serialize Request Body", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 
@@ -83,7 +92,7 @@ public class EventImageController {
                 User user = userRepository.findOne(event_member_id);
                 Event event = eventRepository.findOne(event_id);
 
-                EventImage eventImage = eventImageRepository.findOne(event_image_id);
+                EventImage eventImage = eventImageRepository.findByUserAndEventAndId(user, event, event_image_id);
                 eventImage.setOriginal_name(file.getOriginalFilename());
 
                 String path = upload_path_original;
@@ -108,8 +117,8 @@ public class EventImageController {
                 return ResponseEntity.ok(eventImage.getId());
             }
 
-            log.info("addEventImage failed with event_image_id: {}", event_image_id);
-        return ResponseEntity.badRequest().build();
+        log.info("addEventImage failed with event_image_id: {} because file is null", event_image_id);
+        return new ResponseEntity<String>("File is null", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     private String generateUniqueImagePathHash(String input) {

@@ -15,11 +15,11 @@ public abstract class BaseEntity {
     public final static String ColumnDateModified = "date_modified";
     public final static String ColumnVersion = "version";
 
-    @Column(name = ColumnDateCreated, nullable = false)
+    @Column(name = ColumnDateCreated)
     @JsonFormat(pattern=DATE_FORMAT_STRING)
     private Date date_created;
 
-    @Column(name = ColumnDateModified, nullable = false)
+    @Column(name = ColumnDateModified)
     @JsonFormat(pattern=DATE_FORMAT_STRING)
     private Date date_modified;
 
@@ -31,12 +31,13 @@ public abstract class BaseEntity {
     protected void onCreate() {
         Date new_date = new Date();
         this.date_created = new_date;
+        this.date_modified = new_date;
         this.version = 1L;
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.date_modified = new Date();
-        this.version ++;
+        this.version++;
     }
 }
