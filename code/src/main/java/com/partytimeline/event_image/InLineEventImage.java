@@ -1,5 +1,7 @@
 package com.partytimeline.event_image;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.partytimeline.event.Event;
 import com.partytimeline.user.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,9 +15,11 @@ public interface InLineEventImage {
 
     public String getPath_small();
 
+    @JsonProperty("event_id")
     @Value("#{target.getEvent().getId()}")
     public Long getEventId();
 
+    @JsonProperty("user_id")
     @Value("#{target.getUser().getId()}")
     public Long getUserId();
 
