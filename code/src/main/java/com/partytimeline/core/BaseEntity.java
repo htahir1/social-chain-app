@@ -3,7 +3,6 @@ package com.partytimeline.core;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 import static com.partytimeline.core.Constants.DATE_FORMAT_STRING;

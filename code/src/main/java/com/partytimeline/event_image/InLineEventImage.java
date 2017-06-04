@@ -1,9 +1,6 @@
 package com.partytimeline.event_image;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.partytimeline.event.Event;
-import com.partytimeline.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 

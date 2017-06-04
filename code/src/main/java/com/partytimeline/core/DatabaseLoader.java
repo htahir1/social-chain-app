@@ -4,7 +4,6 @@ import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
 import com.partytimeline.user.User;
 import com.partytimeline.user.UserRepository;
-import com.partytimeline.user_session.UserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Component
