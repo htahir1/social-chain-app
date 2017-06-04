@@ -1,6 +1,5 @@
 package com.partytimeline.event_image;
 
-import com.amazonaws.util.json.JSONObject;
 import com.partytimeline.event.Event;
 import com.partytimeline.event.EventRepository;
 import com.partytimeline.helper.S3Wrapper;
@@ -51,8 +50,8 @@ public class EventImageController {
         if (eventImageDTO != null) {
             EventImage eventImage = new EventImage(eventImageDTO.getId(), eventImageDTO.getCaption(), "", "", eventImageDTO.getDate_taken());
 
-            if (eventImageDTO.getEvent_member_id() != null) {
-                User user = userRepository.findOne(eventImageDTO.getEvent_member_id());
+            if (eventImageDTO.getUser_id() != null) {
+                User user = userRepository.findOne(eventImageDTO.getUser_id());
                 if (user != null) {
                     eventImage.setUser(user);
                 }
@@ -85,11 +84,11 @@ public class EventImageController {
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public ResponseEntity addEventImage(@RequestParam("id") Long event_image_id,
                                         @RequestParam(value="event_id") Long event_id,
-                                        @RequestParam(value="event_member_id") Long event_member_id,
+                                        @RequestParam(value="user_id") Long user_id,
                                         @RequestParam(value="quality") String quality,
                                         @RequestParam("event_image_file") MultipartFile file) {
             if (file != null) {
-                User user = userRepository.findOne(event_member_id);
+                User user = userRepository.findOne(user_id);
                 Event event = eventRepository.findOne(event_id);
 
                 EventImage eventImage = eventImageRepository.findByUserAndEventAndId(user, event, event_image_id);
@@ -112,8 +111,9 @@ public class EventImageController {
                     eventImage.setPath_original(s3Wrapper.getResourceURL(key));
                 }
 
-                log.info("addEventImage succeeded for event_image_id: {} with image path: {}", event_image_id, path);
                 eventImageRepository.save(eventImage);
+
+                log.info("addEventImage succeeded for event_image_id: {} with image path: {}", event_image_id, path);
                 return ResponseEntity.ok(eventImage.getId());
             }
 

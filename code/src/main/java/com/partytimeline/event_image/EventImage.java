@@ -31,7 +31,7 @@ public class EventImage extends BaseEntity {
 
     @NotNull
     @Column(unique = true)
-    @Size(max = 128)
+    @Size(max = 500)
     private String path_small;
 
 

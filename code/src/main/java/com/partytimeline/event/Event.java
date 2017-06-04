@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.partytimeline.core.BaseEntity;
 import com.partytimeline.event_image.EventImage;
 import com.partytimeline.user.User;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -39,7 +40,7 @@ public class Event extends BaseEntity {
     @JsonFormat(pattern=DATE_FORMAT_STRING)
     private Date updated_time;
 
-    private String is_canceled;
+    private Boolean is_canceled;
 
     @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL)
     private Set<User> users;
@@ -78,19 +79,19 @@ public class Event extends BaseEntity {
         this.description = description;
     }
 
-    public Date getStartTime() {
+    public Date getStart_time() {
         return start_time;
     }
 
-    public void setStartTime(Date start_time) {
+    public void setStart_time(Date start_time) {
         this.start_time = start_time;
     }
 
-    public Date getEndTime() {
+    public Date getEnd_time() {
         return end_time;
     }
 
-    public void setEndTime(Date end_time) {
+    public void setEnd_time(Date end_time) {
         this.end_time = end_time;
     }
 
@@ -120,6 +121,10 @@ public class Event extends BaseEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Date getUpdated_time() {
         return updated_time;
     }
@@ -128,11 +133,11 @@ public class Event extends BaseEntity {
         this.updated_time = updated_time;
     }
 
-    public String getIs_canceled() {
+    public Boolean getIs_canceled() {
         return is_canceled;
     }
 
-    public void setIs_canceled(String is_canceled) {
+    public void setIs_canceled(Boolean is_canceled) {
         this.is_canceled = is_canceled;
     }
 }

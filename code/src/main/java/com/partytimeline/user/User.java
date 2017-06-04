@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="event_members")
+@Table(name="users")
 public class User extends BaseEntity {
     @NotNull
     @Id

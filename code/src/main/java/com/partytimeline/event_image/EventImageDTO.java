@@ -10,19 +10,19 @@ public class EventImageDTO {
     private Date date_taken;
     private MultipartFile file;
     private Long event_id;
-    private Long event_member_id;
+    private Long user_id;
 
     public EventImageDTO() {
 
     }
 
-    public EventImageDTO(Long id, String caption, Date date_taken, MultipartFile file, Long event_id, Long event_member_id) {
+    public EventImageDTO(Long id, String caption, Date date_taken, MultipartFile file, Long event_id, Long user_id) {
         this.id = id;
         this.caption = caption;
         this.date_taken = date_taken;
         this.file = file;
         this.event_id = event_id;
-        this.event_member_id = event_member_id;
+        this.user_id = user_id;
     }
 
     public Long getId() {
@@ -65,11 +65,11 @@ public class EventImageDTO {
         this.event_id = event_id;
     }
 
-    public Long getEvent_member_id() {
-        return event_member_id;
+    public Long getUser_id() {
+        return user_id;
     }
 
-    public void setEvent_member_id(Long event_member_id) {
-        this.event_member_id = event_member_id;
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
 }
