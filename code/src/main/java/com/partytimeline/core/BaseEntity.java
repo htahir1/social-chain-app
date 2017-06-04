@@ -16,12 +16,10 @@ public abstract class BaseEntity {
     public final static String ColumnDateModified = "date_modified";
     public final static String ColumnVersion = "version";
 
-    @NotNull
     @Column(name = ColumnDateCreated, nullable = false)
     @JsonFormat(pattern=DATE_FORMAT_STRING)
     private Date date_created;
 
-    @NotNull
     @Column(name = ColumnDateModified, nullable = false)
     @JsonFormat(pattern=DATE_FORMAT_STRING)
     private Date date_modified;
