@@ -44,7 +44,7 @@ public class EventImageController {
         this.eventRepository = eventRepository;
     }
 
-    @RequestMapping(value="/", method=RequestMethod.POST)
+    @RequestMapping(value="", method=RequestMethod.POST)
     public ResponseEntity addEventImageMetadata(@RequestBody EventImageDTO eventImageDTO) {
         if (eventImageDTO != null) {
             EventImage eventImage = new EventImage(eventImageDTO.getId(), eventImageDTO.getCaption(), "", "", eventImageDTO.getDate_taken());
@@ -123,37 +123,6 @@ public class EventImageController {
         }
         return hash;
     }
-
-//    @RequestMapping(value="/download", method=RequestMethod.POST)
-//    public ResponseEntity getEventImage(@RequestParam("id") Long event_image_id,
-//                                        @RequestParam(value="event_id") Long event_id,
-//                                        @RequestParam(value="event_member_id") Long event_member_id,
-//                                        @RequestParam(value="quality") String quality) {
-//            /*EventImage eventImage = eventImageRepository.findByUserAndEventAndId(userRepository.findOne(event_member_id),
-//                    eventRepository.findOne(event_id),
-//                    event_image_id);*/
-//
-//            EventImage eventImage = eventImageRepository.findOne(event_image_id);
-//
-//            // File new_file = handleFileUpload(file, quality);
-//            S3Wrapper s3Wrapper = new S3Wrapper(new AmazonS3Client());
-//
-//            try {
-//                if (quality.equals("small")) {
-//                    return s3Wrapper.download(eventImage.getPath_small());
-//                }
-//                else {
-//                    return s3Wrapper.download(eventImage.getPath_original());
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            log.info("getEventImage succeeded for event_image_id: {}", event_image_id);
-//
-//        log.info("getEventImage failed with event_image_id: {}", event_image_id);
-//        return ResponseEntity.badRequest().build();
-//    }
 
     private String getFileExtension(MultipartFile file) {
         String name = file.getOriginalFilename();

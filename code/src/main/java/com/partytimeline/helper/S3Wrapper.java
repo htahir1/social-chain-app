@@ -122,7 +122,7 @@ public class S3Wrapper {
     }
 
     public String getResourceURL(String key) {
-        return amazonS3Client.getResourceUrl("your-bucket", "some-path/some-key.jpg");
+        return amazonS3Client.getResourceUrl(bucket, key);
     }
     public List<S3ObjectSummary> list() {
         ObjectListing objectListing = amazonS3Client.listObjects(new ListObjectsRequest().withBucketName(bucket));

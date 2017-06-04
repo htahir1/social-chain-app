@@ -106,6 +106,10 @@ public class EventImage extends BaseEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getOriginal_name() {
         return original_name;
     }
