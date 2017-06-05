@@ -116,4 +116,12 @@ public class EventImage extends BaseEntity {
     public void setOriginal_name(String original_name) {
         this.original_name = original_name;
     }
+
+    public Date getDate_taken() {
+        return date_taken;
+    }
+
+    public void setDate_taken(Date date_taken) {
+        this.date_taken = date_taken;
+    }
 }

@@ -23,4 +23,6 @@ public interface InLineEventImage {
     public Long getId();
 
     public String getOriginal_name();
+
+    public String getDate_taken();
 }
