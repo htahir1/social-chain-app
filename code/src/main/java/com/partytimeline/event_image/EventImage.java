@@ -25,12 +25,10 @@ public class EventImage extends BaseEntity {
     private String caption;
 
     @NotNull
-    @Column(unique = true)
     @Size(max = 500)
     private String path_original;
 
     @NotNull
-    @Column(unique = true)
     @Size(max = 500)
     private String path_small;
 
