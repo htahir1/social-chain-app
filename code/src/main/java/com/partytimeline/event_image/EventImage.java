@@ -14,6 +14,7 @@ import java.util.Date;
 import static com.partytimeline.core.Constants.DATE_FORMAT_STRING;
 
 @Entity
+@EntityListeners(EventImageListener.class)
 @Table(name = "event_images")
 public class EventImage extends BaseEntity {
     @NotNull
@@ -40,11 +41,11 @@ public class EventImage extends BaseEntity {
     @JsonFormat(pattern = DATE_FORMAT_STRING)
     private Date date_taken;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Event event;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
 
     protected EventImage() {

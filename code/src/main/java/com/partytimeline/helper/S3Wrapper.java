@@ -118,9 +118,35 @@ public class S3Wrapper {
         return "ERROR";
     }
 
+    public Boolean delete(String key) {
+        try {
+            amazonS3Client.deleteObject(bucket, key);
+            return true;
+        } catch (AmazonServiceException exception) {
+            System.out.println("Caught an AmazonServiceException, " +
+                    "which means your request made it " +
+                    "to Amazon S3, but was rejected with an error response " +
+                    "for some reason.");
+            System.out.println("Error Message: " + exception.getMessage());
+            System.out.println("HTTP  Code: "    + exception.getStatusCode());
+            System.out.println("AWS Error Code:" + exception.getErrorCode());
+            System.out.println("Error Type:    " + exception.getErrorType());
+            System.out.println("Request ID:    " + exception.getRequestId());
+        } catch (AmazonClientException ace) {
+            System.out.println("Caught an AmazonClientException, " +
+                    "which means the client encountered " +
+                    "an internal error while trying to communicate" +
+                    " with S3, " +
+                    "such as not being able to access the network.");
+            System.out.println("Error Message: " + ace.getMessage());
+        }
+        return false;
+    }
+
     public String getResourceURL(String key) {
         return amazonS3Client.getResourceUrl(bucket, key);
     }
+
     public List<S3ObjectSummary> list() {
         ObjectListing objectListing = amazonS3Client.listObjects(new ListObjectsRequest().withBucketName(bucket));
 
